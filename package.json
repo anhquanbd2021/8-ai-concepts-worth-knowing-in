@@ -1,0 +1,16 @@
+{
+  "name": "8-ai-concepts-worth-knowing-in-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "8 Ai Concepts Worth Knowing In Lab — companion interactive demo",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node app/server.js",
+    "lab": "node scripts/lab.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "check": "npm test"
+  }
+}

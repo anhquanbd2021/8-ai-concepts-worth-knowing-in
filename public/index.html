@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Surround — one mediocre model, eight layers around it. Toggle the layers and watch the same model give different answers.">
+  <title>The Surround — 8 AI concepts lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@100..900&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+<!-- pb-shell --><link rel="stylesheet" href="./pb-shell.css"><!-- pb-shell --><!-- pb-back --><link rel="stylesheet" href="./pb-back.css"><!-- pb-back --></head>
+<body>
+<a class="skip-link" href="#pipeline-title">Skip to the lab</a>
+<main>
+  <nav aria-label="Primary"><a aria-current="page" href="/">Lab</a><a href="/guide.html">Guide</a><a href="https://github.com/anhquanbd2021/8-ai-concepts-worth-knowing-in">Source</a></nav>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">The Surround · 1 model, 8 layers, 4 scenarios</p>
+      <h1>Same model.<br>Watch the answer change.</h1>
+      <p class="lede">One deliberately mediocre model answers every turn. The eight layers around it — retrieval, tools, memory, guardrails, and four more — decide whether the reply is grounded, safe, and measurable. Toggle them and the verdict flips.</p>
+    </div>
+    <p class="warning"><strong>Educational model.</strong> The "model" is a canned, deterministic function — no network, no API keys. Every run is reproducible; the point is what the layers do to it.</p>
+  </header>
+
+  <section class="panel controls" aria-labelledby="run-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">Run configuration</p><h2 id="run-title">Scenario &amp; layers</h2></div>
+      <div class="preset-row">
+        <button id="preset-none" type="button">Model only</button>
+        <button id="preset-all" type="button">Enable all eight</button>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <fieldset>
+        <legend>Scenario</legend>
+        <div id="scenario-picker" role="radiogroup" aria-label="Scenario"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Layers around the model</legend>
+        <div id="layer-toggles" class="chips" aria-label="Toggle the eight layers"></div>
+        <p class="muted">Lit violet = enabled. Dimmed outline = the layer is absent and the model is on its own.</p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="pipeline-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">Pipeline cross-section</p><h2 id="pipeline-title">What the model sees</h2></div>
+      <span id="pipeline-verdict" class="badge" role="status" aria-live="polite">—</span>
+    </div>
+    <ol id="pipeline" class="pipe" aria-label="Enabled layers feeding the model"></ol>
+    <p class="muted">Each enabled layer injects its effect into the model's context before it answers. With every layer off, the model answers from training-data averages — confidently, and wrong.</p>
+  </section>
+
+  <section class="workspace" aria-label="Answer and evidence">
+    <section class="panel" aria-labelledby="answer-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Last turn</p><h2 id="answer-title">The answer that ships</h2></div>
+        <span id="failure-badge" class="badge" role="status" aria-live="polite">—</span>
+      </div>
+      <blockquote id="answer-text" class="answer">Run a scenario to see the reply.</blockquote>
+      <div class="meter-row">
+        <span class="meter-label">confidence</span>
+        <div class="meter" role="meter" aria-label="Model confidence" aria-valuemin="0" aria-valuemax="100" id="confidence-meter"><span id="confidence-fill"></span></div>
+        <span id="confidence-value" class="meter-value">—</span>
+      </div>
+      <dl class="facts">
+        <div><dt>grounded</dt><dd id="fact-grounded">—</dd></div>
+        <div><dt>eval score</dt><dd id="fact-eval">—</dd></div>
+        <div><dt>contract</dt><dd id="fact-contract">—</dd></div>
+      </dl>
+      <p class="eyebrow sub">Provenance</p>
+      <ul id="citations" class="tags" aria-label="Citations"></ul>
+      <ul id="tool-log" class="tags" aria-label="Tool calls"></ul>
+    </section>
+    <section class="panel" aria-labelledby="trace-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Layer trace</p><h2 id="trace-title">What each layer did</h2></div>
+      </div>
+      <ol id="trace-log" class="trace" aria-label="Per-layer trace"></ol>
+    </section>
+  </section>
+
+  <section class="panel" aria-labelledby="matrix-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">Verdict matrix</p><h2 id="matrix-title">Four scenarios, three configs</h2></div>
+      <button id="run-matrix" type="button">Re-run matrix</button>
+    </div>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Verdict matrix — scenario by configuration">
+      <table>
+        <thead>
+          <tr><th>Scenario</th><th>Model only</th><th>Current layers</th><th>All eight</th></tr>
+        </thead>
+        <tbody id="matrix-body"></tbody>
+      </table>
+    </div>
+    <p class="muted">The delta between column one and column three is the whole argument: same model, different system.</p>
+  </section>
+
+  <p class="closing-links"><a href="/guide.html">Read the layer-by-layer guide</a><span class="sep" aria-hidden="true">·</span><a href="https://github.com/anhquanbd2021/8-ai-concepts-worth-knowing-in">Inspect source and tests</a></p>
+</main>
+<script type="module" src="/app.js"></script>
+<!-- pb-shell --><a class="pb-shell" href="https://github.com/anhquanbd2021/8-ai-concepts-worth-knowing-in" title="8-ai-concepts-worth-knowing-in — an Article Playbook demo (view source)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="9" height="9" rx="2" fill="#2dd4bf"/><rect x="13" y="2" width="9" height="9" rx="2" fill="#2dd4bf" opacity=".45"/><rect x="2" y="13" width="9" height="9" rx="2" fill="#2dd4bf" opacity=".45"/><rect x="13" y="13" width="9" height="9" rx="4.5" fill="#2dd4bf"/></svg><b>8-ai-concepts-worth-knowing-in</b><i>DEMO</i></a><!-- pb-shell --><!-- pb-back --><a class="pb-back" id="pb-back" href="https://github.com/anhquanbd2021/8-ai-concepts-worth-knowing-in" title="Back to the article — 8-ai-concepts-worth-knowing-in">← Article <i>PLAYBOOK</i></a><script>(function(){var a=document.getElementById('pb-back');if(!a)return;var h=location.hostname;if(/^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(h)){a.href='//'+h+':'+(/^(localhost|127\.0\.0\.1)$/.test(h)?'1234':'30082')+'/microsites/article.html?slug=8-ai-concepts-worth-knowing-in';}})();</script><!-- pb-back --></body>
+</html>
